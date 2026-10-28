@@ -15,7 +15,7 @@ return [
         'rccm'    => 'RCCM/GN-KA/2023/B/3521',
         'phones'  => ['+224 625 55 55 55', '+224 655 55 55 55'],
         'email'   => 'info@candi-group.com',
-        'address' => 'Kipé, Ratoma, Conakry, Guinée',
+        'address' => 'Sogbê, Kankan, Guinée',
         'website' => 'https://candi-group.com',
     ],
 

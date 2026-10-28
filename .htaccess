@@ -1,5 +1,29 @@
+Options -Indexes
+
+# Types MIME pour PWA
+AddType application/manifest+json .webmanifest
+AddType text/javascript             .js
+
+# Service Worker : autoriser tous les en-têtes nécessaires
+<FilesMatch "sw\.js$">
+  Header set Service-Worker-Allowed "/"
+  Header set Cache-Control "no-cache"
+</FilesMatch>
+
 RewriteEngine On
 
-# Redirige tout le trafic vers public/
-RewriteCond %{REQUEST_URI} !^/site-candi/public/
-RewriteRule ^(.*)$ public/$1 [L]
+# Bloquer l'accès direct au dossier public/ (ancien point d'entrée)
+RewriteRule ^public(/.*)?$ - [F,L]
+
+# Sécurité : bloquer les fichiers sensibles
+<FilesMatch "\.(env|log|sql|json|lock|md|sh|bak)$">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+# Ne pas réécrire les fichiers et dossiers existants
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+# Tout passe par index.php
+RewriteRule ^ index.php [L,QSA]

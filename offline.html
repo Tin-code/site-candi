@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hors connexion — CaNDI</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+      background: #f8fafc;
+      color: #0f172a;
+      display: flex;
+      min-height: 100svh;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+    }
+    .card {
+      max-width: 28rem;
+      width: 100%;
+      background: #fff;
+      border-radius: 1rem;
+      border: 1px solid #e2e8f0;
+      padding: 2.5rem 2rem;
+      text-align: center;
+      box-shadow: 0 4px 24px rgba(0,0,0,.06);
+    }
+    .icon {
+      width: 3.5rem;
+      height: 3.5rem;
+      margin: 0 auto 1.25rem;
+      color: #126875;
+    }
+    h1 { font-size: 1.25rem; font-weight: 700; margin-bottom: .5rem; }
+    p  { font-size: .9rem; color: #64748b; line-height: 1.6; margin-bottom: 1.5rem; }
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center;
+      background: #126875; color: #fff;
+      border: none; border-radius: .5rem;
+      padding: .6rem 1.5rem; font-size: .875rem; font-weight: 600;
+      cursor: pointer; text-decoration: none;
+      transition: opacity .15s;
+    }
+    .btn:hover { opacity: .88; }
+    .logo { font-size: 1.5rem; font-weight: 800; color: #126875; letter-spacing: -.02em; margin-bottom: 1.5rem; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="logo">CaNDI</div>
+    <svg class="icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+         stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M1.5 8.5a17 17 0 0 1 21 0"/>
+      <path d="M5 12.5a11 11 0 0 1 14 0"/>
+      <path d="M8.5 16.5a5 5 0 0 1 7 0"/>
+      <line x1="12" y1="20" x2="12.01" y2="20"/>
+    </svg>
+    <h1>Vous êtes hors connexion</h1>
+    <p>Vérifiez votre connexion internet et réessayez.</p>
+    <button class="btn" onclick="location.reload()">Réessayer</button>
+  </div>
+</body>
+</html>
