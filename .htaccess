@@ -1,0 +1,5 @@
+RewriteEngine On
+
+# Redirige tout le trafic vers public/
+RewriteCond %{REQUEST_URI} !^/site-candi/public/
+RewriteRule ^(.*)$ public/$1 [L]
