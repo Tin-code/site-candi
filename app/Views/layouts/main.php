@@ -37,6 +37,28 @@
 
   <?php require __DIR__ . '/../partials/footer.php'; ?>
 
+  <!-- Bannière PWA install -->
+  <div id="pwa-banner" style="display:none"
+       class="fixed bottom-20 left-4 right-4 z-50 sm:left-auto sm:right-20 sm:w-72">
+    <div class="flex items-center gap-3 rounded-2xl border border-border bg-card px-4 py-3 shadow-lg">
+      <img src="<?= rtrim(\App\Core\env('APP_URL', ''), '/') ?>/icon-192.png" alt="CaNDI" class="size-10 rounded-xl shrink-0">
+      <div class="min-w-0 flex-1">
+        <p class="text-sm font-semibold leading-tight">Installer CaNDI</p>
+        <p class="text-xs text-muted-foreground">Accès rapide depuis votre écran</p>
+      </div>
+      <div class="flex flex-col gap-1 shrink-0">
+        <button id="pwa-install-btn"
+                class="rounded-lg bg-primary px-3 py-1 text-xs font-semibold text-primary-foreground hover:opacity-90">
+          Installer
+        </button>
+        <button id="pwa-dismiss-btn"
+                class="rounded-lg border border-border px-3 py-1 text-xs text-muted-foreground hover:bg-muted">
+          Plus tard
+        </button>
+      </div>
+    </div>
+  </div>
+
   <!-- IkodiBubble (assistant flottant) -->
   <div id="ikodi-bubble" class="fixed bottom-6 right-6 z-50">
     <a href="<?= rtrim(\App\Core\env('APP_URL', ''), '/') ?>/ikodi"
@@ -51,13 +73,49 @@
 
   <?php if (isset($extraScripts)) echo $extraScripts; ?>
 
-  <!-- Service Worker -->
+  <!-- Service Worker + PWA install prompt -->
   <script>
-    if ('serviceWorker' in navigator) {
-      const swUrl   = <?= json_encode(rtrim(\App\Core\env('APP_URL', ''), '/') . '/sw.js') ?>;
-      const swScope = <?= json_encode(rtrim(\App\Core\env('APP_URL', ''), '/') . '/') ?>;
-      navigator.serviceWorker.register(swUrl, { scope: swScope }).catch(() => {});
-    }
+    (function () {
+      // Service Worker
+      if ('serviceWorker' in navigator) {
+        const swUrl   = <?= json_encode(rtrim(\App\Core\env('APP_URL', ''), '/') . '/sw.js') ?>;
+        const swScope = <?= json_encode(rtrim(\App\Core\env('APP_URL', ''), '/') . '/') ?>;
+        navigator.serviceWorker.register(swUrl, { scope: swScope }).catch(() => {});
+      }
+
+      // PWA install prompt
+      let deferredPrompt = null;
+      const banner      = document.getElementById('pwa-banner');
+      const installBtn  = document.getElementById('pwa-install-btn');
+      const dismissBtn  = document.getElementById('pwa-dismiss-btn');
+
+      // Ne plus montrer si l'utilisateur a déjà refusé
+      if (localStorage.getItem('pwa-dismissed')) return;
+
+      window.addEventListener('beforeinstallprompt', function (e) {
+        e.preventDefault();
+        deferredPrompt = e;
+        banner.style.display = '';
+      });
+
+      installBtn.addEventListener('click', function () {
+        banner.style.display = 'none';
+        if (deferredPrompt) {
+          deferredPrompt.prompt();
+          deferredPrompt.userChoice.then(function () { deferredPrompt = null; });
+        }
+      });
+
+      dismissBtn.addEventListener('click', function () {
+        banner.style.display = 'none';
+        localStorage.setItem('pwa-dismissed', '1');
+      });
+
+      // Masquer si déjà installée
+      window.addEventListener('appinstalled', function () {
+        banner.style.display = 'none';
+      });
+    })();
   </script>
 </body>
 </html>

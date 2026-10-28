@@ -24,6 +24,7 @@ use App\Controllers\App\MessagesSmsController;
 use App\Controllers\App\NotificationsController;
 use App\Controllers\App\RapportsController;
 use App\Controllers\App\AssistantController;
+use App\Controllers\IkodiController;
 use App\Controllers\Api\CinetPayWebhookController;
 use App\Middleware\AuthMiddleware;
 use App\Middleware\GuestMiddleware;
@@ -41,6 +42,8 @@ $router->get('/produits-services', [ProduitsServicesController::class, 'index'])
 $router->get('/actualites', [ActualitesController::class, 'index']);
 $router->get('/actualites/{slug}', [ActualitesController::class, 'show']);
 $router->get('/contact', [ContactController::class, 'index']);
+$router->get('/ikodi',          [IkodiController::class, 'index']);
+$router->post('/ikodi/demander',[IkodiController::class, 'ask']);
 
 // ============================================================
 // Authentification (invités seulement)
